@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(name='SPLICE-q',
                  version='1.0',
-                 scripts=["splicing_efficiency.py"],
+                 scripts=["SPLICE-q.py"],
                  description='SPLICE-q is a fast and user-friendly Python tool for genome-wide SPLICing Efficiency quantification',
                  long_description=long_description,
                  long_description_content_type="text/markdown",
