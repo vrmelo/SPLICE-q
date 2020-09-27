@@ -57,4 +57,4 @@ or check our [User Manual](doc/wiki.md).
 
 ## Citation
 
-foo 
+TBA
