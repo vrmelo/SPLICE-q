@@ -767,17 +767,15 @@ def main_coverage(parser):
                 except TimeoutError:
                     progress_checking(progressupdates_recv)
                 except StopIteration:
-                    print("All chromosomes done!")
                     break
                 except IndexError:
-                    print("IndexError!")
                     break
                 else:
                     if result is not None:
                         for row in result:
                             row[5] = iso2gene[row[6]]
                             writer.writerow(row)
-
+            progress.stop()
             f.close()
 
     now = datetime.datetime.now()
