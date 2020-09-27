@@ -775,6 +775,7 @@ def main_coverage(parser):
                         for row in result:
                             row[5] = iso2gene[row[6]]
                             writer.writerow(row)
+                    break
 
             f.close()
 
