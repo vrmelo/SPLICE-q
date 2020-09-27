@@ -23,5 +23,5 @@ setuptools.setup(name='SPLICE-q',
                  python_requires='>=3.6',
                  # Project uses reStructuredText, so ensure that the docutils get
                  # installed or upgraded on the target machine
-                 install_requires=["pysam", "rich", "interlap"]
+                 install_requires=["pysam", "rich", "interlap", "numpy"]
                  )
