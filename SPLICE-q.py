@@ -494,8 +494,14 @@ def main():
                         help="Minimum coverage of each splice junctions. (Default = 10)")
     parser.add_argument('-p', '--NrProcesses', type=int, metavar='nrproc', default=4,
                         help="Number of processes spawned to process chromosomes in parallel. 0 spawns as many as processors are available.")
+    parser.add_argument('-x', '--ChromsList', type=str, metavar='chromlist', default='',
+                        help="List of Chromosome names separated by comma (without spaces). Without this parameter a default set of common chromosomes is used.")
 
     args = parser.parse_args()
+
+    global defaultchroms
+    if not args.ChromsList == '':
+        defaultchroms = args.ChromsList.split(',')
 
     bamfiles = args.bamfile
     for bamfile in bamfiles:
@@ -508,7 +514,7 @@ def main():
             bai = str(bamfile_name + ".bai")
             pysam.index(bamfile_name, bai)
         else:
-            # print("Index available")
+            print("Index available")
             continue
 
     if args.extra_coverage:
