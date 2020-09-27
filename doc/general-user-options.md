@@ -1,11 +1,11 @@
 #General User Options
 For a full list of parameters, please type:
 ```bash
-$ SPLICE-q -h
+$ SPLICE-q.py -h
 ```
 or
 ```bash
-$ SPLICE-q --help
+$ SPLICE-q.py --help
 ```
 
 ##Summary table of parameters

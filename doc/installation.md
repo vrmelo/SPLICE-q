@@ -20,14 +20,14 @@ SPLICE-q can be installed from pip and from source.
 ### pip
 
 ```bash
- $ pip3 install splice-q
+ $ pip3 install SPLICE-q
 ```
 
 ###Development/install from source
 
 ```bash
- $ git clone https://github.com/vrmelo/splice-q
- $ cd splice-q
+ $ git clone https://github.com/vrmelo/SPLICE-q
+ $ cd SPLICE-q
  $ pip3 install -e .
 ```
 

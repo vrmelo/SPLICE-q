@@ -18,7 +18,7 @@ If you wish to select levels 1 or 2 for your analysis, you simply have to adjust
 `--FilterLevel` or `-f`. For example:
 
 ```bash
-$ SPLICE-q -b file.bam -g annotation.gtf -f 2
+$ SPLICE-q.py -b file.bam -g annotation.gtf -f 2
 ```
 
 This will run SPLICE-q on **Level 2**.

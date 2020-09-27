@@ -16,14 +16,14 @@ SPLICE-q can be installed from pip and from source.
 ## pip
 Using pip is the easiest way to install SPLICE-q.
 ```bash
- $ pip3 install splice-q
+ $ pip3 install SPLICE-q
 ```
 
 ## Development/install from source
 
 ```bash
- $ git clone https://github.com/vrmelo/splice-q
- $ cd splice-q
+ $ git clone https://github.com/vrmelo/SPLICE-q
+ $ cd SPLICE-q
  $ pip3 install -e .
 ```
 
@@ -41,17 +41,17 @@ Operating Systems
 
 To run SPLICE-q with default parameters, it requires a BAM file and a genome annotation file provided by GENCODE or Ensembl (GTF):
 ```bash
-$ SPLICE-q -b file.bam -g annotation.gtf
+$ SPLICE-q.py -b file.bam -g annotation.gtf
 ```
 To specify an output file name and location: 
 
 ```bash
-$ SPLICE-q -b file.bam -g annotation.gtf -o outfile.tsv
+$ SPLICE-q.py -b file.bam -g annotation.gtf -o outfile.tsv
 ```
 
 Need help?
 ```bash
-$ SPLICE-q -h
+$ SPLICE-q.py -h
 ```
 or check our [User Manual](doc/wiki.md).
 
