@@ -473,8 +473,8 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-g', '--gtffile', metavar='gtf', type=argparse.FileType('r'), nargs=1, required=True,
                         help="GTF file: only ENSEMBL or GENCODE accepted.", )
-    parser.add_argument('-b', '--bamfile', metavar='bam', type=argparse.FileType('r'), nargs='+', required=True,
-                        help="Sorted BAM file(s).")
+    parser.add_argument('-b', '--bamfile', metavar='bam', type=argparse.FileType('r'), nargs=1, required=True,
+                        help="Sorted BAM file.")
     parser.add_argument('-o', '--outfile', metavar='out', type=str,
                         help="Output file name.")
     parser.add_argument('-q', '--quiet', action='store_true',
