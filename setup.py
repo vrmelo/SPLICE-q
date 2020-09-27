@@ -9,7 +9,7 @@ setuptools.setup(name='SPLICE-q',
                  description='SPLICE-q is a fast and user-friendly Python tool for genome-wide SPLICing Efficiency quantification',
                  long_description=long_description,
                  long_description_content_type="text/markdown",
-                 url='https://github.com/vrmelo/xxx',
+                 url='https://github.com/vrmelo/SPLICE-q',
                  author='Verônica R Melo Costa, Julianus Pfeuffer, xxx, Ulf A Ørom, Rosario M Piro',
                  author_email='veronica.melocosta@gmail.com',
                  license='GPL-2',
@@ -23,5 +23,5 @@ setuptools.setup(name='SPLICE-q',
                  python_requires='>=3.6',
                  # Project uses reStructuredText, so ensure that the docutils get
                  # installed or upgraded on the target machine
-                 install_requires=["pysam,""rich", "interlap"]
+                 install_requires=["pysam", "rich", "interlap"]
                  )
