@@ -1,0 +1,8 @@
+README.md
+SPLICE_q.egg-info/PKG-INFO
+SPLICE_q.egg-info/SOURCES.txt
+SPLICE_q.egg-info/dependency_links.txt
+SPLICE_q.egg-info/not-zip-safe
+SPLICE_q.egg-info/requires.txt
+SPLICE_q.egg-info/top_level.txt
+spliceq/__init__.py

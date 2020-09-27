@@ -1,0 +1,30 @@
+Metadata-Version: 2.1
+Name: SPLICE-q
+Version: 1.0
+Summary: SPLICE-q is a fast and user-friendly Python tool for genome-wide SPLICing Efficiency quantification
+Home-page: https://github.com/vrmelo/xxx
+Author: Verônica R Melo Costa, Julianus Pfeuffer, xxx, Ulf A Ørom, Rosario M Piro
+Author-email: veronica.melocosta@gmail.com
+License: GPL-2
+Description: # README
+        
+        This is the readme for the program
+        
+        ## Installation
+        
+        foo
+        
+        ## Usage
+        
+        bar
+        
+        > Do that foo.py
+        
+        baz
+        
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3.6
+Classifier: License :: OSI Approved :: GNU General Public License v2 (GPLv2)
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
