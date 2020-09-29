@@ -43,9 +43,8 @@ def exon2intron(listOfExons, min_intron_length):
     :return: are zero-based, start excluded
     """
 
-    # TODO check if list empty
     minus_strand = listOfExons[0][3] == "-"
-    listOfExons.sort(key=lambda exon: exon[1])  # TODO check how we need to sort. Start only?
+    listOfExons.sort(key=lambda exon: exon[1])
     numberExons = len(listOfExons)
     intron = []
     if numberExons > 1:
@@ -85,7 +84,7 @@ def get_sjCoordinates(GTFfile, min_intron_length=30, keep_masked_introns=False, 
                 strand = splitGTFline[6]
                 newExon = (chrom, start1 - 1, end1, strand)
                 iso2exons[tcx].append(newExon)
-                if not keep_masked_introns or filterSJs:  # Building this dict is only needed if we do not keep all introns anyway (save some time)
+                if not keep_masked_introns or filterSJs:
                     if chrom not in exon_by_chr:
                         exon_by_chr[chrom] = defaultdict(InterLap)
                     exon_by_chr[chrom][strand].add((start1, end1, {'g': gene}))
@@ -206,7 +205,7 @@ def processBamEntry(chromSJ, bamfile, verbose, read_qual, chr_prefix):
                 if read.is_reverse:
                     strand = "-"
 
-                # zero-based left-most coordinate.. hmm.. in our Interval tree they are stored one-based.
+                # zero-based left-most coordinate. In the Interval tree they are stored one-based.
                 readStart = read.reference_start + 1
                 # readStart = read.reference_start
                 # pysam reports the end non-inclusive
@@ -223,13 +222,12 @@ def processBamEntry(chromSJ, bamfile, verbose, read_qual, chr_prefix):
                 if countIdx == 6:  # nonsplit reads
                     for mapped_sj_interval in sjintervals[strand].find((readStart, readEnd)):
                         if (readEnd >= mapped_sj_interval[1] and
-                                readStart <= mapped_sj_interval[0]):  # make sure it is full overlap
+                                readStart <= mapped_sj_interval[0]):
                             mapped_sj_interval[2][key] += 1
                 else:  # split reads
-                    # TODO only count if split reads hit both splice junctions?
+
                     for blockstart, blockend in read.get_blocks():
                         for mapped_sj_interval in sjintervals[strand].find((blockstart, blockend)):
-                            # ignore if there is a 100% overlap. TODO think about counting it as non-split
                             if ((blockstart + 1) == mapped_sj_interval[1]) or (blockend == mapped_sj_interval[0]):
                                 mapped_sj_interval[2][key] += 1
 
@@ -249,7 +247,7 @@ def resetSJDict(sjintervals):
                 interval[2]['s'] = 0
 
 
-######## -------------------------  For the part that uses coverage ----------- #############
+######## -------------------------  IER ----------- #############
 
 def calcScore(introncov, leftexoncov, rightexoncov):
     exonsumm = (leftexoncov + rightexoncov)
@@ -285,14 +283,12 @@ def sjOverlaps(intron, exon_by_chr, gene):
             return True
 
 
-# coverages = defaultdict(defaultdict)
 def getCoverage(bam, chrom, start, end, minus_strand, min_quality):
     getCoverage.cache = getattr(getCoverage, 'cache', tuple((defaultdict(), defaultdict())))
     if (start, end) in getCoverage.cache[minus_strand]:
         return getCoverage.cache[minus_strand][(start, end)]
 
-    ##TODO add filter for uniquely mapped etc.
-    ##we do not need to consider spliced unspliced here
+
     if minus_strand:
         filterRead = lambda r: r.is_reverse and r.mapq > min_quality
     else:
@@ -337,7 +333,6 @@ def getSJCoverage(bam, chrom, start, end, minus_strand, min_quality, debug):
             return False
 
     def filterReadUnsplit(read):
-        # read quality also covers "uniquely mapped" etc. otherwise we could separately check flags
         if read.mapq <= min_quality:
             return False
         if read.is_reverse == minus_strand:
@@ -345,7 +340,6 @@ def getSJCoverage(bam, chrom, start, end, minus_strand, min_quality, debug):
                 if cigaroperation == 3:
                     return False
             # Full overlap
-            # We require it to have no "N" event on the SJ but ignore mismatches or deletions over the SJ.
             return read.aend > end and read.pos <= start
         else:
             return False
@@ -356,21 +350,13 @@ def getSJCoverage(bam, chrom, start, end, minus_strand, min_quality, debug):
 
     cov_split_array = functools.reduce(np.add, array)
 
-    # if (cov_split_array[0] != 0 and cov_split_array[1] != 0):
-    #    print ("weird split : ", cov_split_array, " -> ", start, end, "-" if minus_strand else "+")
 
     cov_unsplit_array = functools.reduce(np.add,
                                          bam.count_coverage(contig='chr' + str(chrom), start=start,
                                                             stop=end, quality_threshold=0,
                                                             read_callback=filterReadUnsplit))
 
-    # if (cov_unsplit_array[0] != cov_unsplit_array[1] and cov_unsplit_array[0] != 0):
-    #    print ("weird unsplit : ", cov_unsplit_array, " -> ", start, end, "-" if minus_strand else "+")
 
-    # For split reads it could be that one base is overlapping with a split read ending there. Ignore by taking the
-    # max or TODO by only taking the count at the last position of the exon.
-    # For unsplit reads it could be that "N" bases are mapped, which are not counted. We will count them if at least
-    # one is not mapped to "N" by taking the max as well.
     result = np.max(cov_split_array), np.max(cov_unsplit_array)
     getSJCoverage.cache[minus_strand][(start, end)] = result
     return result
@@ -384,8 +370,6 @@ def worker_main(itemsexonschrom, bamfile, chr_prefix, verbose, min_intron_length
     else:
         contig = chrom
 
-    # if verbose:
-    #    print("Processing chromosome " + chrom + " ...")
 
     bam = pysam.AlignmentFile(bamfile, 'rb')
     n = len(items.items())
@@ -407,8 +391,8 @@ def worker_main(itemsexonschrom, bamfile, chr_prefix, verbose, min_intron_length
 
         numberExons = len(listOfExons)
 
-        listOfExons.sort(key=lambda exon: exon[1])  # TODO check how we need to sort. Start only?
-        minus_strand = listOfExons[0][3] == "-"  # TODO we dont have to save the strand in every exon actually
+        listOfExons.sort(key=lambda exon: exon[1])
+        minus_strand = listOfExons[0][3] == "-"
 
         strandrange = range(1, numberExons) if not minus_strand else reversed(range(1, numberExons))
         intronid = 0
@@ -432,7 +416,7 @@ def worker_main(itemsexonschrom, bamfile, chr_prefix, verbose, min_intron_length
             intronid += 1
             debug = False
 
-            ## For start, end it does not matter what 5p and 3p is, we always want start before end
+
             thisintron = (listOfExons[i - 1][0], listOfExons[i - 1][2], listOfExons[i][1], listOfExons[i][3], intronid)
 
             # filter by intron length
@@ -454,7 +438,6 @@ def worker_main(itemsexonschrom, bamfile, chr_prefix, verbose, min_intron_length
                                                           exon3p[1 + int(minus_strand)] + 1,
                                                           minus_strand, min_quality, debug)
 
-                    # coverage filter is only applied to SJs to be consistent with other code
                     if (sjcov5p_s + sjcov5p_us >= min_coverage and
                             sjcov3p_s + sjcov3p_us >= min_coverage):
                         resultrows.append([thisintron[0], thisintron[1], thisintron[2],
@@ -463,7 +446,7 @@ def worker_main(itemsexonschrom, bamfile, chr_prefix, verbose, min_intron_length
                                            introncov, sjcov3p_s,
                                            sjcov3p_us, exoncov3p,
                                            calcScore(introncov, exoncov5p, exoncov3p)])
-    # print("Finished chromosome ", chrom)
+
     progressupdates_send.send(
         (task_id, False, updateinterval))  # send another batch to definitely set the progress to 100%
     return resultrows
@@ -471,30 +454,30 @@ def worker_main(itemsexonschrom, bamfile, chr_prefix, verbose, min_intron_length
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('-g', '--gtffile', metavar='gtf', type=argparse.FileType('r'), nargs=1, required=True,
-                        help="GTF file: only ENSEMBL or GENCODE accepted.", )
-    parser.add_argument('-b', '--bamfile', metavar='bam', type=argparse.FileType('r'), nargs=1, required=True,
+    parser.add_argument('-g', '--gtffile', metavar=' ', type=argparse.FileType('r'), nargs=1, required=True,
+                        help="GTFfile provided by GENCODE or Ensembl.")
+    parser.add_argument('-b', '--bamfile', metavar=' ', type=argparse.FileType('r'), nargs=1, required=True,
                         help="Sorted BAM file.")
-    parser.add_argument('-o', '--outfile', metavar='out', type=str,
+    parser.add_argument('-o', '--outfile', metavar=' ', type=str,
                         help="Output file name.")
     parser.add_argument('-q', '--quiet', action='store_true',
                         help="Enable quiet mode (only shows warnings and errors).")
-    parser.add_argument('-e', '--extra_coverage', action='store_true',
-                        help="Enable extra calculation of coverage. Much slower.")
+    parser.add_argument('-i', '--IERatio', action='store_true',
+                        help="Running mode that additionally outputs the Inverse Intron Expression Ratio (IER). Takes longer.")
     parser.add_argument('-f', '--filterLevel', type=int, choices=range(1, 4), metavar='', default=3,
                         help="Levels:"
                              "1) Keeps all introns in the genome. "
-                             "2) Keeps only introns whose Sjs do not overlap with exons in different genes. "
+                             "2) Keeps only introns whose SJs do not overlap with exons in different genes. "
                              "3) Keeps only introns that do not overlap with exons in other parts of the genome (Default).")
-    parser.add_argument('-l', '--MinIntronLength', type=int, metavar='minlen', default=30,
+    parser.add_argument('-l', '--MinIntronLength', type=int, metavar=' ', default=30,
                         help="Minimum intron length. (Default = 30)")
-    parser.add_argument('-r', '--MinReadQuality', type=int, metavar='minqual', default=10,
-                        help="Minimum read quality. (Default = 10)")
-    parser.add_argument('-c', '--MinCoverage', type=int, metavar='mincov', default=10,
+    parser.add_argument('-r', '--MinReadQuality', type=int, metavar=' ', default=10,
+                        help="Minimum read quality. (Default > 10)")
+    parser.add_argument('-c', '--MinCoverage', type=int, metavar=' ', default=10,
                         help="Minimum coverage of each splice junctions. (Default = 10)")
-    parser.add_argument('-p', '--NrProcesses', type=int, metavar='nrproc', default=4,
+    parser.add_argument('-p', '--NrProcesses', type=int, metavar=' ', default=4,
                         help="Number of processes spawned to process chromosomes in parallel. 0 spawns as many as processors are available.")
-    parser.add_argument('-x', '--ChromsList', type=str, metavar='chromlist', default='',
+    parser.add_argument('-x', '--ChromsList', type=str, metavar=' ', default='',
                         help="List of Chromosome names separated by comma (without spaces). Without this parameter a default set of common chromosomes is used.")
 
     args = parser.parse_args()
@@ -510,14 +493,14 @@ def main():
         if not os.path.isfile(bamfile_name + ".bai") or os.stat(bamfile_name).st_mtime >= os.stat(
                 bamfile_name + ".bai").st_mtime:
             now = datetime.datetime.now()
-            print(now.strftime("%H:%M") + '   Generating index file ' + bamfile_name + ".bai" + "...")
+            print(now.strftime("%D   %H:%M") + '   Generating index file ' + bamfile_name + ".bai" + "...")
             bai = str(bamfile_name + ".bai")
             pysam.index(bamfile_name, bai)
         else:
             print("Index available")
             continue
 
-    if args.extra_coverage:
+    if args.IERatio:
         main_coverage(parser)
     else:
         main_nocoverage(parser)
@@ -535,7 +518,7 @@ def main_nocoverage(parser):
 
     if verbose:
         now = datetime.datetime.now()
-        print(now.strftime("%H:%M") + '   Parsing splice junctions...')
+        print(now.strftime("%D   %H:%M") + '   Parsing splice junctions...')
 
     keepMaskedIntrons = args.filterLevel <= 2
     filterSJs = args.filterLevel == 2
@@ -547,14 +530,14 @@ def main_nocoverage(parser):
     if args.NrProcesses > 0:
         nrProcesses = args.NrProcesses
 
-    # TODO how to aggregate multiple files? Currently only the results of the last file would be written out.
+
     for bamfile in bamfiles:
         # Open bam quickly to check chromosomes to be extracted
         name = bamfile.name
         bam = pysam.AlignmentFile(bamfile, 'rb')
         bamRefs = set()
         chr_prefix = False
-        # TODO even better, make intersection with GTF "chromosomes" as well!
+
         for r in bam.references:
             if r[:3] == "chr":
                 chr_prefix = True
@@ -571,7 +554,7 @@ def main_nocoverage(parser):
 
         if verbose:
             now = datetime.datetime.now()
-            print(now.strftime("%H:%M") + '   Calculating coverage for ' + name + '...')
+            print(now.strftime("%D   %H:%M") + '   Calculating coverage for ' + name + '...')
 
         read_qual = args.MinReadQuality
 
@@ -616,11 +599,11 @@ def main_nocoverage(parser):
 
     if verbose:
         now = datetime.datetime.now()
-        print(now.strftime("%H:%M") + '   Calculation splicing efficiencies...')
+        print(now.strftime("%D   %H:%M") + '   Calculation splicing efficiencies...')
 
     if verbose:
         now = datetime.datetime.now()
-        print(now.strftime("%H:%M") + '   Writing output...')
+        print(now.strftime("%D   %H:%M") + '   Writing output...')
 
     with open(outfilename, 'w') as f:
         # header
@@ -649,7 +632,6 @@ def progress_checking(recv):
     # for task_id, rec in recv:
     if recv.poll():
         task_id, init, inc = recv.recv()
-        # print(task_id, init, inc)
         if init:
             progress.update(task_id, total=inc)
             progress.start_task(task_id)
@@ -670,7 +652,7 @@ def main_coverage(parser):
 
     if verbose:
         now = datetime.datetime.now()
-        print(now.strftime("%H:%M") + '   Parsing splice junctions...')
+        print(now.strftime("%D   %H:%M") + '   Parsing splice junctions...')
 
     min_quality = args.MinReadQuality
 
@@ -687,7 +669,6 @@ def main_coverage(parser):
     bam = pysam.AlignmentFile(bamfile.name, 'rb')
     bamRefs = set()
 
-    # TODO even better, make intersection with GTF "chromosomes" as well!
     for r in bam.references:
         if r[:3] == "chr":
             chr_prefix = True
@@ -704,7 +685,6 @@ def main_coverage(parser):
     exon_by_chr = defaultdict(dict)
     # tcxpos = defaultdict()
 
-    # TODO this should be roughly the same as in the first version of the tool, we could try to combine
     # get exons from GTF
     for line in GTFfile:
         splitGTFline = line.split('\t')
@@ -716,7 +696,6 @@ def main_coverage(parser):
             if splitGTFline[2] == 'exon':
                 gene = line.split('gene_id')[1].split('"')[1]
                 tcx = line.split('transcript_id')[1].split('"')[1]
-                # TODO this dict should be split by chromosome as well
                 iso2gene[tcx] = gene
                 start1 = int(splitGTFline[3])
                 end1 = int(splitGTFline[4])
@@ -741,12 +720,12 @@ def main_coverage(parser):
     with Pool(processes=nrProcesses) as p:
         with open(outfilename, 'w+') as f:
             writer = csv.writer(f, lineterminator='\n', delimiter="\t")
-            writer.writerow(["Chromosome", "IStart", "IEnd", "Strand", "IID", "GeneID", "TranscriptID",
-                             "5'Exon Median Cov.", "5' SJ #Split",
-                             "5' SJ #Nonsplit", "Intron Median Cov.", "3' SJ #Split", "3' SJ #Nonsplit",
-                             "3'Exon Median Cov.", "Ratioscore"])
+            writer.writerow(["chr", "IStart", "IEnd", "strand", "intron_ID", "gene_ID", "transcript_ID",
+                             "exon5_cov", "sj5_cov_split",
+                             "sj5_cov_nonsplit", "intron_cov", "sj3_cov_split", "sj3_cov_nonsplit",
+                             "exon3_cov", "IER"])
             now = datetime.datetime.now()
-            print(now.strftime("%H:%M") + '   Calculating coverage...')
+            print(now.strftime("%D   %H:%M") + '   Calculating coverage...')
             chromtotask = {}
             for chrom in foundChroms:
                 chromtotask[chrom] = progress.add_task("Chromosome " + str(chrom), start=False)
@@ -756,8 +735,6 @@ def main_coverage(parser):
                                                     verbose=verbose, min_intron_length=min_intron_length,
                                                     min_coverage=min_coverage, min_quality=min_quality)
 
-            # for result in p.imap_unordered(processtcxwsettings,
-            #                               [(chrom2iso2exons[chrom], exon_by_chr[chrom], chrom, i, chromtotask[chrom]) for i, chrom in enumerate(foundChroms)]):
             it = p.imap_unordered(processtcxwsettings,
                                   [(chrom2iso2exons[chrom], exon_by_chr[chrom], chrom, i, chromtotask[chrom]) for
                                    i, chrom in enumerate(foundChroms)])
@@ -779,7 +756,7 @@ def main_coverage(parser):
             f.close()
 
     now = datetime.datetime.now()
-    print(now.strftime("%H:%M") + '   Done!')
+    print(now.strftime("%D   %H:%M") + '   Done!')
 
 
 if __name__ == '__main__':
