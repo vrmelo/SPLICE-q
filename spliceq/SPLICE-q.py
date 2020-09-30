@@ -456,11 +456,11 @@ def worker_main(itemsexonschrom, bamfile, chr_prefix, verbose, min_intron_length
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('-g', '--gtffile', metavar=' ', type=argparse.FileType('r'), nargs=1, required=True,
+    parser.add_argument('-g', '--gtffile', metavar='', type=argparse.FileType('r'), nargs=1, required=True,
                         help="GTFfile provided by GENCODE or Ensembl.")
-    parser.add_argument('-b', '--bamfile', metavar=' ', type=argparse.FileType('r'), nargs=1, required=True,
+    parser.add_argument('-b', '--bamfile', metavar='', type=argparse.FileType('r'), nargs=1, required=True,
                         help="Sorted BAM file.")
-    parser.add_argument('-o', '--outfile', metavar=' ', type=str,
+    parser.add_argument('-o', '--outfile', metavar='', type=str,
                         help="Output file name.")
     parser.add_argument('-q', '--quiet', action='store_true',
                         help="Enable quiet mode (only shows warnings and errors).")
@@ -471,15 +471,15 @@ def main():
                              "1) Keeps all introns in the genome. "
                              "2) Keeps only introns whose SJs do not overlap with exons in different genes. "
                              "3) Keeps only introns that do not overlap with exons in other parts of the genome (Default).")
-    parser.add_argument('-l', '--MinIntronLength', type=int, metavar=' ', default=30,
+    parser.add_argument('-l', '--MinIntronLength', type=int, metavar='', default=30,
                         help="Minimum intron length. (Default = 30)")
-    parser.add_argument('-r', '--MinReadQuality', type=int, metavar=' ', default=10,
+    parser.add_argument('-r', '--MinReadQuality', type=int, metavar='', default=10,
                         help="Minimum read quality. (Default > 10)")
-    parser.add_argument('-c', '--MinCoverage', type=int, metavar=' ', default=10,
+    parser.add_argument('-c', '--MinCoverage', type=int, metavar='', default=10,
                         help="Minimum coverage of each splice junctions. (Default = 10)")
-    parser.add_argument('-p', '--NrProcesses', type=int, metavar=' ', default=4,
+    parser.add_argument('-p', '--NrProcesses', type=int, metavar='', default=4,
                         help="Number of processes spawned to process chromosomes in parallel. 0 spawns as many as processors are available.")
-    parser.add_argument('-x', '--ChromsList', type=str, metavar=' ', default='',
+    parser.add_argument('-x', '--ChromsList', type=str, metavar='', default='',
                         help="List of Chromosome names separated by comma (without spaces). Without this parameter a default set of common chromosomes is used.")
 
     args = parser.parse_args()
