@@ -2,7 +2,7 @@
 
 A Python tool for genome-wide **SPLI**cing **E**fficiency **q**uantification from RNA-seq data.
 
-[User Manual](doc/wiki.md)
+[User Manual](https://github.com/vrmelo/SPLICE-q/wiki)
 
 ## Features
 - Quantification of individual intron splicing efficiencies from strand-specific RNA-seq data.
@@ -53,7 +53,7 @@ Need help?
 ```bash
 $ SPLICE-q.py -h
 ```
-or check our [User Manual](doc/wiki.md).
+or check our [User Manual](https://github.com/vrmelo/SPLICE-q/wiki).
 
 ## Citation
 
