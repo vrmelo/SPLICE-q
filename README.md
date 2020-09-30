@@ -16,7 +16,7 @@ SPLICE-q can be installed from pip and from source.
 ## pip
 Using pip is the easiest way to install SPLICE-q.
 ```bash
- $ pip3 install SPLICE-q
+ $ pip install SPLICE-q
 ```
 
 ## Development/install from source
@@ -24,7 +24,7 @@ Using pip is the easiest way to install SPLICE-q.
 ```bash
  $ git clone https://github.com/vrmelo/SPLICE-q
  $ cd SPLICE-q
- $ pip3 install -e .
+ $ pip install -e .
 ```
 
 Requirements
