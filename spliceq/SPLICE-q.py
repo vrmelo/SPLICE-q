@@ -524,7 +524,10 @@ def main_nocoverage(parser):
     filterSJs = args.filterLevel == 2
     sjintervals, nrIntrons, intronIDtoTcxGeneNr = get_sjCoordinates(gtffile, min_intron_length=args.MinIntronLength,
                                                                     keep_masked_introns=keepMaskedIntrons,
-                                                                    filterSJs=filterSJs)
+                                                                    filterSJs=filterSJs,
+                                                                    intron_file=None,
+                                                                    exon_file=None,
+                                                                    chroms=defaultchroms)
 
     nrProcesses = cpu_count()
     if args.NrProcesses > 0:
