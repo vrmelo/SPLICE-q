@@ -1,4 +1,4 @@
-#Reverse Intron Expression Ratio (_IER_)
+# Reverse Intron Expression Ratio (_IER_)
 
 As an alternative measure for splicing efficiency, SPLICE-q computes an inverse intron expression ratio (_IER_), 
 which compares the introns’ expression levels with those of their flanking exons.
