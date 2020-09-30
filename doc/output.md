@@ -1,5 +1,5 @@
-#Output
-##1. Standard output 
+# Output
+## 1. Standard output 
 The standard output format is a `.tsv` file. 
 
 | **Header**          | **Interpretation**                           |
@@ -19,7 +19,7 @@ The standard output format is a `.tsv` file.
 | sj3\_cov\_split     | 3' splice junction \- split reads coverage   |
 | SE                  | Splicing Efficiency                          |
 
-##2. _IER_
+## 2. _IER_
 The output format for `--IERatio` (`-e`) option is also a `.tsv` file.
 
 | **Header**          | **Interpretation**                            |
