@@ -1,5 +1,4 @@
 # Annotation Files
-
 SPLICE-q requires a genome annotation file provided by [GENCODE](https://www.gencodegenes.org/) or [Ensembl](https://www.ensembl.org/index.html) in Gene Transfer Format (GTF) containing information on exons and the genes and transcripts they are associated with. SPLICE-q will use this file to locate and annotate introns and splice junctions from the exon coordinates.
 
 [What is the difference between GENCODE GTF and Ensembl GTF?](https://www.gencodegenes.org/pages/faq.html)
