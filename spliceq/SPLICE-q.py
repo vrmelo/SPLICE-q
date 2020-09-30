@@ -501,6 +501,8 @@ def main():
             continue
 
     if args.IERatio:
+        if not args.filterLevel == 3:
+            print("Warning: using IER is restricted to --filterLevel 3. Ignoring user input for -f/--filterLevel.")
         main_coverage(parser)
     else:
         main_nocoverage(parser)
