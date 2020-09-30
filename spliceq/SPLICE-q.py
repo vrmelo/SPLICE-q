@@ -533,7 +533,6 @@ def main_nocoverage(parser):
     if args.NrProcesses > 0:
         nrProcesses = args.NrProcesses
 
-
     for bamfile in bamfiles:
         # Open bam quickly to check chromosomes to be extracted
         name = bamfile.name
@@ -569,7 +568,6 @@ def main_nocoverage(parser):
         p.join()
 
     # Initialize output table
-
     outfilename = args.outfile
     if len(outfilename) == 0:
         outfilename = "splicing-efficiency-score.tsv"
@@ -608,6 +606,9 @@ def main_nocoverage(parser):
         now = datetime.datetime.now()
         print(now.strftime("%D   %H:%M") + '   Writing output...')
 
+    skipped = 0
+    min_coverage_param = args.MinCoverage
+    min_coverage = max(1, min_coverage_param)
     with open(outfilename, 'w') as f:
         # header
         f.write("\t".join(
@@ -615,8 +616,11 @@ def main_nocoverage(parser):
              "sj5start", "sj5end", "sj5_cov_nonsplit", "sj5_cov_split",
              "sj3start", "sj3end", "sj3_cov_nonsplit", "sj3_cov_split", "score"]) + "\n")
         for line in lines:
-            min_coverage_param = args.MinCoverage
-            min_coverage = max(1, min_coverage_param)
+            # skip filtered entries
+            if line[7] is None or line[8] is None or line[11] is None or line[12] is None:
+                skipped = skipped + 1
+                continue
+
             sj5_cov = float(line[7] + line[8])
             sj3_cov = float(line[11] + line[12])
 
@@ -628,6 +632,8 @@ def main_nocoverage(parser):
     f.close()
 
     if verbose:
+        if skipped > 0:
+            "Warning: Skipped " + str(skipped) + " introns (probably due to missing chromosome/contig in bam file)."
         print("Done!")
 
 
