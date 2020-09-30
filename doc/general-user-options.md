@@ -1,4 +1,4 @@
-#General User Options
+# General User Options
 For a full list of parameters, please type:
 ```bash
 $ SPLICE-q.py -h
@@ -8,7 +8,7 @@ or
 $ SPLICE-q.py --help
 ```
 
-##Summary table of parameters
+## Summary table of parameters
 Other filtering can also be set up according to users’ requirements:
 
 | Option                         | Description | Default                 |
