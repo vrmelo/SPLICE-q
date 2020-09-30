@@ -8,6 +8,7 @@ Examples of acceptable genome sequence files:
 GENCODE: <br />
 - Human v34 <br /> `ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_34/gencode.v34.annotation.gtf.gz`
 - Mouse M25 <br /> `ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M25/gencode.vM25.annotation.gtf.gz`<br />
+<br />
 Ensembl: <br />
 - Human GRCh38 Release 100 <br /> `ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz`<br />
 - Mouse GRCm38 Release 100 <br /> `ftp://ftp.ensembl.org/pub/release-100/gtf/mus_musculus/Mus_musculus.GRCm38.100.gtf.gz`<br />
