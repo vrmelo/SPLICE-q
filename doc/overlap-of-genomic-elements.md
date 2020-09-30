@@ -1,4 +1,4 @@
-#Overlap of genomic elements
+# Overlap of genomic elements
 
 SPLICE-q is sensitive to the overlap of genomic elements. 
 This means the tool takes into consideration when a genome shows overlapping features that 
