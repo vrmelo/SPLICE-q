@@ -13,7 +13,7 @@ Using pip is the easiest way to install SPLICE-q. First, make sure you have [pip
  $ pip --version
 ```
 
-You should see an output displaying the pip version, as well as the location and Python version. If you don't, please install it by following the instructions for your system as described [here](https://pip.pypa.io/en/stable/installing/).
+You should see an output displaying the pip version, as well as the location and Python version (make sure it shows 3.6 or higher). If you don't, please install it by following the instructions for your system as described [here](https://pip.pypa.io/en/stable/installing/).
 
 ## Install SPLICE-q
 SPLICE-q can be installed from pip and from source.
