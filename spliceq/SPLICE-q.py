@@ -573,7 +573,7 @@ def main_nocoverage(parser):
 
     # Initialize output table
     outfilename = args.outfile
-    if len(outfilename) == 0 or outfilename is None:
+    if outfilename is None or len(outfilename) == 0:
         outfilename = "splicing-efficiency-score.tsv"
 
     # rows: nrIntrons
