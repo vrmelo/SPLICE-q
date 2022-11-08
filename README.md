@@ -57,4 +57,4 @@ or check our [User Manual](https://github.com/vrmelo/SPLICE-q/wiki).
 
 ## Citation
 
-V. R. Melo Costa, J. Pfeuffer, A. Louloupi, U. A. V Ørom, and R. M. Piro, “SPLICE-q: a Python tool for genome-wide quantification of splicing efficiency,” bioRxiv, p. 2020.10.12.318808, Oct. 2020.
+de Melo Costa, Verônica R., et al. "SPLICE-q: a Python tool for genome-wide quantification of splicing efficiency." BMC bioinformatics 22.1 (2021): 1-14.
