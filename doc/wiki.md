@@ -16,7 +16,7 @@ SPLICE-q is a fast and user-friendly tool, implemented in Python 3, for quantifi
 SPLICE-q is freely available under a [GNU Public License (Version 2)](../LICENSE).
 
 ## Citation
-TBA
+de Melo Costa, Verônica R., et al. "SPLICE-q: a Python tool for genome-wide quantification of splicing efficiency." BMC bioinformatics 22.1 (2021): 1-14.
 
 ---
 
